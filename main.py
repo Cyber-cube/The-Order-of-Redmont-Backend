@@ -88,6 +88,11 @@ def checkaccstatus():
     return "Your account is not accepted yet\n(apka account abhi tak accept nahi hua hai)"
   else:
     return "Your account has been accepted, you can login now\n(Apka account accept ho gaya hai, aab aap login kar sakte hai)"
-    
+
+@app.route('/back', methods=["POST"])
+def back():
+  redirect(render_template("index.html"))
+
+
 if __name__ == "__main__":
   app.run(host='0.0.0.0', port=8080)
