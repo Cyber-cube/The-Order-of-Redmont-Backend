@@ -35,7 +35,7 @@ def register():
     return "User registered successfully, now please wait until you are accepted by the headmaster"
 
 @app.route('/checkaccstatus', methods=["POST"])
-def checkstatus():
+def checkaccstatus():
   id = str(request.form["id"])
   with open(".data/users.json") as f:
     users = json.load(f)
@@ -77,22 +77,26 @@ def accept():
     with open("./data/pendingusers.json", "w") as file:
       json.dump(pending_users, file, indent=2)
     return "User accepted !"
-     
-@app.route('/checkaccstatus', methods=["POST"])
-def checkaccstatus():
-  device_id = str(request.form["device_id"])
-
-  with open("data.json") as f:
-    data = json.load(f)
-  if data[str(device_id)]["account_accepted"] == False:
-    return "Your account is not accepted yet\n(apka account abhi tak accept nahi hua hai)"
-  else:
-    return "Your account has been accepted, you can login now\n(Apka account accept ho gaya hai, aab aap login kar sakte hai)"
 
 @app.route('/back', methods=["POST"])
 def back():
-  redirect(render_template("index.html"))
+  redirect(url_for("index"))
 
+@app.route('/chat', methods=["POST"])
+def chat():
+  id = str(request.form["id"])
+  with open("./data/users.json") as f:
+    users = json.load(f)
+  if not id in users:
+    return "You haven't registered an account yet"
+  elif users[id]["is_accepted"] = False:
+    return "You aren't accepted yet"
+  else:
+    with open("messages.json") as m:
+      message = m.read()
+    return render_template("chat.html", data=message)
+  
+  
 
 if __name__ == "__main__":
   app.run(host='0.0.0.0', port=8080)
